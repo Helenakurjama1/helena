@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/jquery.min.js"></script>
 </head>
 
 <style>
@@ -47,17 +47,17 @@
                     <img src="./img/heart.png">
                 </td>
 				<td class="noborder">
-                    <text>3</text>
+                    <text id="healthText">3</text>
                 </td>
 				<td class="noborder">
                     <img src="./img/star.jpg">
                 </td>
 				<td class="noborder">
-                    <text>0</text>
+                    <text id="scoreText">0</text>
                 </td>
 			</tr>
 		</table>
-    <table>
+    <table class="gameBoard">
         <tr>
             <td id="11"></td>
             <td id="12"></td>
@@ -98,6 +98,33 @@
 </body>
 
 <script>
+    
+    let switchInterval = 1000;
+    
+    let health = 3;
+    let score = 0;
+    
+    let redSquareId = "";
+    
+    makeRedSquare();
+    let refreshInterval = setInterval(makeRedSquare, switchInterval);
+        
+    $(".gameBoard tr td").click(function(){
+        if(this.id == redSquareId){
+            score += 1;
+            $("#scoreText").text(score);
+            clearInterval(refreshInterval);
+            makeRedSquare();
+            refreshInterval = setInterval(makeRedSquare, switchInterval);
+        }else{
+            health -= 1;
+            $("#healthText").text(health);
+        }
+        console.log("Vajutatud: " + this.id)
+        console.log("Score: " + score);
+    });
+    
+    
     function getRandomNumber(){
         return Math.floor(Math.random() * 5) + 1  ;
     }
@@ -111,13 +138,9 @@
     function makeRedSquare(){
         $("td").removeClass("red");
         let id = getRandomSquare();
-        console.log(id);
+        redSquareId = id;
         $("#" + id).addClass("red");
     }
-
-    
-    setInterval(makeRedSquare, 3000);
-
     
 </script>
 
